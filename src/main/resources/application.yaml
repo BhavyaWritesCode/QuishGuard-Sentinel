@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: quishguard-sentinel
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/quishguard
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    # Flyway owns schema creation — Hibernate only validates it matches entities
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 55MB
+
+server:
+  port: 8080
+
+# ─── JWT ──────────────────────────────────────────────────────────────────────
+jwt:
+  secret: ${JWT_SECRET:change-me-in-production-must-be-32-chars-minimum}
+  access-token-expiry-ms: 900000       # 15 minutes
+  refresh-token-expiry-ms: 604800000   # 7 days
+
+# ─── External APIs ────────────────────────────────────────────────────────────
+api:
+  google-safe-browsing:
+    key: ${GOOGLE_SAFE_BROWSING_API_KEY:}
+    url: https://safebrowsing.googleapis.com/v4/threatMatches:find
+  virustotal:
+    key: ${VIRUSTOTAL_API_KEY:}
+    url: https://www.virustotal.com/api/v3/urls
+
+# ─── Rate Limiting ────────────────────────────────────────────────────────────
+rate-limit:
+  anonymous:
+    capacity: 5
+    refill-hours: 1
+  authenticated:
+    capacity: 20
+    refill-hours: 1
