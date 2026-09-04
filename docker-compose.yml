@@ -1,0 +1,38 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: quishguard-db
+    environment:
+      POSTGRES_DB: quishguard
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - quishguard_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d quishguard"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: quishguard-sentinel
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: postgres
+      JWT_SECRET: ${JWT_SECRET}
+      GOOGLE_SAFE_BROWSING_API_KEY: ${GOOGLE_SAFE_BROWSING_API_KEY}
+      VIRUSTOTAL_API_KEY: ${VIRUSTOTAL_API_KEY}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  quishguard_data:
