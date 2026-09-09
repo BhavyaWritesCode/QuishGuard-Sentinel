@@ -4,8 +4,8 @@ spring:
 
   datasource:
   url: jdbc:postgresql://${DB_HOST:localhost}:5432/quishguard
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -33,17 +33,17 @@ server:
 
 # ─── JWT ──────────────────────────────────────────────────────────────────────
 jwt:
-  secret: ${JWT_SECRET}
+  secret: "${JWT_SECRET}"
   access-token-expiry-ms: 900000       # 15 minutes
   refresh-token-expiry-ms: 604800000   # 7 days
 
 # ─── External APIs ────────────────────────────────────────────────────────────
 api:
   google-safe-browsing:
-    key: ${GOOGLE_SAFE_BROWSING_API_KEY:}
+    key: "${GOOGLE_SAFE_BROWSING_API_KEY:}"
     url: https://safebrowsing.googleapis.com/v4/threatMatches:find
   virustotal:
-    key: ${VIRUSTOTAL_API_KEY:}
+    key: "${VIRUSTOTAL_API_KEY:}"
     url: https://www.virustotal.com/api/v3/urls
 
 # ─── Rate Limiting ────────────────────────────────────────────────────────────
