@@ -3,13 +3,12 @@ spring:
     name: quishguard-sentinel
 
   datasource:
-  url: jdbc:postgresql://${DB_HOST:localhost}:5432/quishguard
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/quishguard
     username: "${DB_USERNAME}"
     password: "${DB_PASSWORD}"
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    # Flyway owns schema creation — Hibernate only validates it matches entities
     hibernate:
       ddl-auto: validate
     show-sql: false
@@ -31,13 +30,11 @@ spring:
 server:
   port: 8080
 
-# ─── JWT ──────────────────────────────────────────────────────────────────────
 jwt:
   secret: "${JWT_SECRET}"
-  access-token-expiry-ms: 900000       # 15 minutes
-  refresh-token-expiry-ms: 604800000   # 7 days
+  access-token-expiry-ms: 900000
+  refresh-token-expiry-ms: 604800000
 
-# ─── External APIs ────────────────────────────────────────────────────────────
 api:
   google-safe-browsing:
     key: "${GOOGLE_SAFE_BROWSING_API_KEY:}"
@@ -46,7 +43,6 @@ api:
     key: "${VIRUSTOTAL_API_KEY:}"
     url: https://www.virustotal.com/api/v3/urls
 
-# ─── Rate Limiting ────────────────────────────────────────────────────────────
 rate-limit:
   anonymous:
     capacity: 5
