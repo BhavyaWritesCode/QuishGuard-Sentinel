@@ -1,4 +1,4 @@
-package com.quishguard.sentinel.util;
+package com.quishguard.desktop.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

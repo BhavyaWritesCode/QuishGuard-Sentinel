@@ -1,5 +1,4 @@
-package com.quishguard.sentinel.util;
-
+package com.quishguard.desktop.util;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
