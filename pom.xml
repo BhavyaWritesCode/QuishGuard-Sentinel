@@ -5,89 +5,83 @@
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
-        <relativePath/>
-    </parent>
-
     <groupId>com.quishguard</groupId>
-    <artifactId>sentinel</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>QuishGuard Sentinel</name>
-    <description>Self-hosted QR Phishing Detection System</description>
+    <artifactId>desktop</artifactId>
+    <version>1.0.0</version>
+    <name>QuishGuard Desktop</name>
+    <description>QR Phishing Detection — Windows Desktop Application</description>
     <packaging>jar</packaging>
 
     <properties>
         <java.version>17</java.version>
-        <lombok.version>1.18.30</lombok.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Locked versions -->
+        <javafx.version>21.0.2</javafx.version>
         <zxing.version>3.5.3</zxing.version>
-        <pdfbox.version>3.0.2</pdfbox.version>
-        <itext.version>7.2.5</itext.version>
         <javacv.version>1.5.10</javacv.version>
         <imgscalr.version>4.2</imgscalr.version>
         <tika.version>2.9.2</tika.version>
-        <bucket4j.version>8.10.1</bucket4j.version>
+        <jnativehook.version>2.2.2</jnativehook.version>
+        <jna.version>5.14.0</jna.version>
+        <sqlite.version>3.45.3.0</sqlite.version>
         <jjwt.version>0.12.6</jjwt.version>
+        <jackson.version>2.17.1</jackson.version>
+        <lombok.version>1.18.30</lombok.version>
         <commons-io.version>2.16.1</commons-io.version>
     </properties>
 
     <dependencies>
 
+        <!-- ═══════════════════════════════════════
+             JAVAFX — UI + System Tray + Notifications
+             ═══════════════════════════════════════ -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
 
+        <!-- ═══════════════════════════════════════
+             JNATIVEHOOK — Global window/screen monitoring
+             Captures OS-level events without admin rights
+             ═══════════════════════════════════════ -->
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>${jjwt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <version>${jjwt.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <version>${jjwt.version}</version>
-            <scope>runtime</scope>
+            <groupId>com.github.kwhat</groupId>
+            <artifactId>jnativehook</artifactId>
+            <version>${jnativehook.version}</version>
         </dependency>
 
+        <!-- ═══════════════════════════════════════
+             JNA — Windows API calls
+             Gets window title, bounds, process name
+             ═══════════════════════════════════════ -->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════
+             QR DECODING — 3.5.3 only
+             ═══════════════════════════════════════ -->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
@@ -99,29 +93,9 @@
             <version>${zxing.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>${pdfbox.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>kernel</artifactId>
-            <version>${itext.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>layout</artifactId>
-            <version>${itext.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>io</artifactId>
-            <version>${itext.version}</version>
-        </dependency>
-
-        <!-- ⚠ First build downloads ~600MB natives -->
+        <!-- ═══════════════════════════════════════
+             IMAGE PROCESSING — OpenCV via JavaCV
+             ═══════════════════════════════════════ -->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv-platform</artifactId>
@@ -134,21 +108,51 @@
             <version>${imgscalr.version}</version>
         </dependency>
 
+        <!-- ═══════════════════════════════════════
+             MIME DETECTION
+             ═══════════════════════════════════════ -->
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>${tika.version}</version>
         </dependency>
 
+        <!-- ═══════════════════════════════════════
+             SQLITE — Local database, zero setup
+             One .db file, no server needed
+             ═══════════════════════════════════════ -->
         <dependency>
-            <groupId>com.bucket4j</groupId>
-            <artifactId>bucket4j-core</artifactId>
-            <version>${bucket4j.version}</version>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite.version}</version>
         </dependency>
 
+        <!-- ═══════════════════════════════════════
+             HTTP CLIENT — External API calls
+             (VirusTotal, GSB, RDAP)
+             ═══════════════════════════════════════ -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════
+             JSON — Parse API responses
+             ═══════════════════════════════════════ -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════
+             UTILITIES
+             ═══════════════════════════════════════ -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -157,14 +161,13 @@
             <version>${commons-io.version}</version>
         </dependency>
 
+        <!-- ═══════════════════════════════════════
+             TESTING
+             ═══════════════════════════════════════ -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -172,10 +175,14 @@
 
     <build>
         <plugins>
+            <!-- Lombok annotation processor -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
                 <configuration>
+                    <source>17</source>
+                    <target>17</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -185,17 +192,47 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
+            <!-- JavaFX plugin — required to run JavaFX apps -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <mainClass>com.quishguard.desktop.app.QuishGuardApp</mainClass>
                 </configuration>
+            </plugin>
+
+            <!-- Package as executable JAR with all dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.quishguard.desktop.app.QuishGuardApp</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
